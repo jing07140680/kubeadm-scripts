@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: gpu-test
+  namespace: kube-system  # Specify the namespace here
+spec:
+  selector:
+    matchLabels:
+      app: gpu-test
+  template:
+    metadata:
+      labels:
+        app: gpu-test
+    spec:
+      containers:
+      - name: gpu-container
+        image: nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04
+        resources:
+          limits:
+            nvidia.com/gpu: 1
+        command: ["sleep","infinity"]
+      nodeSelector:
+        nvidia.com/gpu.present: "true"
+ 
